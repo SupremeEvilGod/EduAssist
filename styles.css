@@ -1,0 +1,165 @@
+/* styles.css */
+
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #0ff; /* Neon green for headings */
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000; /* Black navbar background */
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-title {
+    color: #0ff; /* Neon green navbar title */
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+}
+
+.navbar-links li {
+    margin-left: 20px;
+}
+
+.navbar-links a {
+    color: #0ff; /* Neon green navbar links */
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+    color: #0f0; /* Bright neon green on hover */
+}
+
+/* Specific styles for Voice to Text Converter */
+.text-display,
+.translation {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #0f0; /* Neon green border */
+    min-height: 100px;
+    overflow-y: scroll;
+    text-align: left;
+    color:white;
+}
+
+.languages {
+    margin-top: 10px;
+}
+
+.lang-btn {
+    margin-right: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #0f0; /* Neon green button background */
+    color: #000; /* Black button text color */
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.lang-btn:hover {
+    background-color: #0ff; /* Bright neon green on hover */
+    color: #000; /* Adjust text color for better visibility */
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0f0; /* Neon green button background */
+    color: #000; /* Black button text color */
+}
+
+button:hover {
+    background-color: #0ff; /* Bright neon green on hover */
+    color: #000; /* Adjust text color for better visibility */
+}
+
+#start-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#stop-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+span {
+    cursor: pointer;
+    color: #0ff; /* Neon green span text */
+}
+
+span:hover {
+    text-decoration: underline;
+}
+
+#word-info {
+    margin-top: 20px;
+    width: 80%;
+    max-width: 600px;
+    background: #000; /* Black background for word info */
+    border: 1px solid #0f0; /* Neon green border */
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#word-info-content {
+    margin-top: 10px;
+    text-align: left;
+}
+
+#word-info img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+}

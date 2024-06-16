@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice to Text and Translation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:black;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #238823;
+            padding: 15px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .navbar-title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navbar-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar-links li {
+            margin-left: 20px;
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: #238823;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: black;
+            padding: 20px;
+            border-radius: 8px;
+            border-width: 2px;
+            border-color: #238823;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .text-display, .translation {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+            overflow-y: scroll;
+            text-align: left;
+            color: white;
+        }
+
+        .languages {
+            margin-top: 10px;
+        }
+
+        .lang-btn {
+            margin-right: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #start-btn {
+            background-color: #238823;
+            color: white;
+        }
+
+        #stop-btn {
+            background-color: #238823;
+            color: white;
+        }
+
+        span {
+            cursor: pointer;
+            color: #007bff;
+        }
+        span:hover {
+            text-decoration: underline;
+        }
+
+        #word-info {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #word-info-content {
+            margin-top: 10px;
+            text-align: left;
+        }
+        #word-info img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        h1{
+            color: #238823;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <img src="logo.jpeg" alt="Education Logo" class="navbar-logo">
+            <div class="navbar-title">EduAssist</div>
+        </div>
+        <ul class="navbar-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <h1>Voice to Text Converter</h1>
+        <br>
+        <button id="start-btn">Start Recognition</button>
+        <button id="stop-btn" disabled>Stop Recognition</button>
+        <div class="text-display" id="textDisplay"></div>
+        <div class="languages" id="languageButtons"></div>
+        <div class="translation" id="translationDisplay"></div>
+        <!-- <div id="word-info">
+            <div id="word-info-content"></div>
+        </div> -->
+    </div>
+<script>
+    
+        // JavaScript code to handle speech recognition
+        const textDisplay = document.getElementById('textDisplay');
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+
+        const recognition = new webkitSpeechRecognition(); // Create speech recognition object
+
+        recognition.continuous = true; // Enable continuous recognition
+        recognition.interimResults = true; // Enable interim results
+
+        recognition.onresult = (event) => {
+            let interimTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    displayTranscript(transcript + ' ');
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            console.log('Text Display Content:', textDisplay.innerHTML); // Log current content
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+        };
+
+        startBtn.addEventListener('click', () => {
+            recognition.start();
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+        });
+
+        stopBtn.addEventListener('click', () => {
+            recognition.stop();
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        });
+
+        function displayTranscript(text) {
+            const words = text.split(' ').map(word => `<span onclick="getWordInfo('${word.trim()}')">${word}</span>`).join(' ');
+            textDisplay.innerHTML += words;
+        }
+
+        async function getWordInfo(word) {
+    try {
+        console.log(`Fetching information for: ${word}`);
+
+        // Fetch word meaning from Dictionary API
+        const dictionaryResponse = await fetch(`API/${word}`);
+        if (!dictionaryResponse.ok) {
+            throw new Error(`Dictionary API response not ok: ${dictionaryResponse.status}`);
+        }
+        const dictionaryData = await dictionaryResponse.json();
+
+        if (dictionaryData.length > 0) {
+            const meaning = dictionaryData[0].meanings[0].definitions[0].definition;
+
+            // Fetch image from Unsplash API
+            const imageUrl = `https://source.unsplash.com/1600x900/?${word}`;
+            const imageResponse = await fetch(imageUrl);
+            if (!imageResponse.ok) {
+                throw new Error(`Unsplash API response not ok: ${imageResponse.status}`);
+            }
+            const imageObjectURL = imageUrl; // Direct URL from Unsplash
+
+            // Display word info including image
+            const imageElement = `<img src="${imageObjectURL}" alt="${word}" />`;
+
+            document.getElementById('word-info-content').innerHTML = `
+                <p><strong>${word}:</strong> ${meaning}</p>
+                ${imageElement}
+            `;
+        } else {
+            document.getElementById('word-info-content').innerHTML = `<p>No information found for ${word}.</p>`;
+        }
+    } catch (error) {
+        console.error(`Error fetching information for ${word}:`, error);
+        document.getElementById('word-info-content').innerHTML = `<p>Error fetching information for ${word}. ${error.message}</p>`;
+    }
+}
+
+
+        const translationDisplay = document.getElementById('translationDisplay');
+        const languageButtons = document.getElementById('languageButtons');
+
+        const languages = [
+            { code: 'kn', name: 'Kannada' },
+            { code: 'en', name: 'English' },
+            { code: 'hi', name: 'Hindi' },
+            { code: 'ta', name: 'Tamil' },
+            { code: 'te', name: 'Telugu' }
+        ];
+
+        // Create language buttons
+        languages.forEach((lang) => {
+            const button = document.createElement('button');
+            button.className = 'lang-btn';
+            button.textContent = lang.name;
+            button.addEventListener('click', () => {
+                translateText(lang.code);
+            });
+            languageButtons.appendChild(button);
+        });
+
+        // Function to handle translation
+        async function translateText(language) {
+            const textToTranslate = textDisplay.textContent.trim();
+            console.log('Text to Translate:', textToTranslate); // Log text to be translated
+
+            // Ensure there's text to translate
+            if (!textToTranslate) {
+                alert('No text to translate!');
+                return;
+            }
+
+            // Example using Google Translate API
+            const apiKey = 'API';
+            const apiUrl = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+
+            const data = {
+                q: textToTranslate,
+                target: language
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                // Check for errors in the response
+                if (result.error) {
+                    console.error('Error from API:', result.error.message);
+                    alert('Translation API error: ' + result.error.message);
+                    return;
+                }
+
+                // Display the translation result
+                translationDisplay.textContent = result.data.translations[0].translatedText;
+                console.log('Translated Text:', result.data.translations[0].translatedText); // Log translated text
+            } catch (error) {
+                console.error('Error translating text:', error);
+                alert('Error translating text: ' + error.message);
+            }
+        }
+    
+</script>
+    
+</body>
+</html>
